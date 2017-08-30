@@ -1,24 +1,26 @@
-// let express = require('express')
-//   , app = express()
-//   , db = require('./db')
+require('dotenv').config()
 
-// let UserController = require('./user/userController')  
-
-// let PhotoController = require('./photos/photoController')
-
-// app.use('/photos', PhotoController)
-
-// app.use('/users', UserController)
-
-// module.exports = app
-
-const app = require('koa')
+const Koa = require('koa')
     , logger = require('koa-logger')
+    , router = require('koa-router')()
+    , koaBody = require('koa-body')
+    , app = new Koa()
+    , axios = require('axios')
 
+app.use(logger())
 
-app.use(logger)
+router.get('/', (ctx, next) => {
 
+    axios.get('https://unsplash.it/list')
+        .then(response => {
+            ctx.body = response
+            
+        })
+})
 
-
+app 
+    .use(koaBody())
+    .use(router.routes())
+    .use(router.allowedMethods());
 
 module.exports = app

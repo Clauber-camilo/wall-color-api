@@ -11,11 +11,13 @@
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
+    "co": "^4.6.0",
     "dotenv": "^4.0.0",
     "koa": "^2.3.0",
     "koa-body": "^2.3.0",
     "koa-logger": "^3.0.1",
     "koa-router": "^7.2.1",
-    "mongoose": "^4.11.9"
+    "mongoose": "^4.11.9",
+    "monk": "^6.0.3"
   }
 }
