@@ -20,8 +20,7 @@
     "koa-logger": "^3.0.1",
     "koa-router": "^7.2.1",
     "memory-fs": "^0.4.1",
-    "mongoose": "^4.11.9",
-    "monk": "^6.0.3"
+    "mongoose": "^4.11.9"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
