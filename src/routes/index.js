@@ -6,7 +6,7 @@ const prefix = 'photos'
 
 const router = new Router()
 
-router.prefix(`api/${prefix}`)
+router.prefix(`/api/${prefix}`)
 
 router.get('/', PhotoController.saveAll)
 

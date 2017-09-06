@@ -7,9 +7,6 @@ const Koa = require('koa')
 
 const router = require('./src/routes')
 
-
-console.log(router)
-
 const app = new Koa()
 
 app.use(logger())

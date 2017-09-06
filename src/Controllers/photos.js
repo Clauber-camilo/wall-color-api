@@ -11,6 +11,9 @@ const mock = require('../lib/mockup')
 
 
 class PhotoController {
+
+
+
     async find (ctx) {
         ctx.body = await Photo.find()
     }
@@ -64,7 +67,10 @@ class PhotoController {
                 colors: colorArray
             }
 
-            save.push(await this.add(list))
+            console.log(list)
+            const photo = await new Photo(list).save()
+            save.push(photo) 
+            
             
         }
 
