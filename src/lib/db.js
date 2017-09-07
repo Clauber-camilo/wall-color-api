@@ -1,5 +1,15 @@
 let mongoose = require('mongoose')
 
-mongoose.connect( 
-    'mongodb://clauber-camilo:9D4zfifiYBu9zPrv@color-wall-shard-00-00-begqr.mongodb.net:27017,color-wall-shard-00-01-begqr.mongodb.net:27017,color-wall-shard-00-02-begqr.mongodb.net:27017/test?ssl=true&replicaSet=color-wall-shard-0&authSource=admin'
-)
+let mongoUrl = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_URL}`
+
+mongoose.connect(mongoUrl, { useMongoClient: true, promiseLibrary: global.Promise })
+
+var db = mongoose.connection;
+
+// mongodb error
+db.on('error', console.error.bind(console, 'connection error:'));
+
+// mongodb connection open
+db.once('open', () => {
+    console.log(`Connected to Mongo at: ${new Date()}`)
+});

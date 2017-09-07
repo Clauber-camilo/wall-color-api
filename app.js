@@ -5,7 +5,7 @@ const Koa = require('koa')
     , koaBody = require('koa-body')
     , db = require('./src/lib/db')
 
-const router = require('./src/routes')
+const router = require('./src/photos/route')
 
 const app = new Koa()
 
