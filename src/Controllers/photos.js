@@ -50,13 +50,11 @@ class PhotoController {
                  console.log(error)
             })
         
-        
             await getColors(fs.readFileSync('/public/images/test.jpg'), 'image/jpg').then(c => {
                 colorArray = c.map(color => color.hex())
             })
     
-            fs.unlink('/public/images/test.jpg', err => err)
-            
+            fs.unlink('/public/images/test.jpg', err => err)        
 
             list.request.body = {
                 id: item.id,
@@ -67,10 +65,9 @@ class PhotoController {
                 colors: colorArray
             }
 
-            console.log(list)
-            const photo = await new Photo(list).save()
+            // console.log(list)
+            const photo = await new Photo(list.request.body).save()
             save.push(photo) 
-            
             
         }
 

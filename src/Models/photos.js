@@ -8,9 +8,7 @@ const photoSchema = new Schema({
         required: true
     },
     url: {
-        full: {
-            type: String
-        }, 
+        full: String, 
         regular: {
             type: String,
             required: true

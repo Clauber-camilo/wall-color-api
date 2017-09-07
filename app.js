@@ -11,13 +11,6 @@ const app = new Koa()
 
 app.use(logger())
 
-// router.get('/', async (ctx) => {
-
-//     // const photoList = await axios.get('https://unsplash.it/list')
-
-    
-// })
-
 app 
     .use(koaBody())
     .use(router.routes())
