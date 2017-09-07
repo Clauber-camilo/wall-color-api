@@ -17,6 +17,6 @@ router.get('/:id', PhotoController.findById)
 
 // GET /api/photos/save-images 
 // This will save a list of images of the unplash in the mongo database
-router.get('/save-images', PhotoController.saveAll)
+router.post('/save-images', PhotoController.saveAll)
 
 module.exports = router

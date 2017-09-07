@@ -1,11 +1,11 @@
 const axios = require('axios')
-, getColors = require('get-image-colors')
-, MemoryFileSystem = require("memory-fs")
-, fs = new MemoryFileSystem()
+    , getColors = require('get-image-colors')
+    , MemoryFileSystem = require("memory-fs")
+    , fs = new MemoryFileSystem()
 
 const Photo = require('./PhotoModel')
 
-const mock = require('../lib/mockup')
+// const mock = require('../lib/mockup')
 
 class PhotoController {
     async find (ctx) {
@@ -13,7 +13,9 @@ class PhotoController {
     }
 
     async findById (ctx) {
-        ctx.body = await Photo.findOne({ id: ctx.params.id })
+        const response = await Photo.findOne({ id: ctx.params.id })
+
+        ctx.body = response ? response : 'Not found any image with this id'
     }
 
     async add (ctx) {
@@ -26,15 +28,26 @@ class PhotoController {
     }
 
     async saveAll (ctx) {
+        console.log('Aehooooo')
+
         let list = { request: {}}
         let colorArray
         let save = []
 
-        console.log('Aehooooo')
 
         fs.mkdirpSync("/public/images/")
 
-        for (let item of mock) {
+        const unsplashResponse = await axios({
+            method: 'GET',
+            url: `${process.env.UNSPLASH_URL}/photos?per_page=100`,
+            headers: {
+                'Authorization' : `Client-ID ${process.env.UNSPLASH_CLIENT_ID}`
+            }
+        })
+
+        console.log(unsplashResponse)
+
+        for (let item in unsplashResponse) {
 
             await axios({
                 method:'get',

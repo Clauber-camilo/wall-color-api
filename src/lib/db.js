@@ -3,6 +3,7 @@ let mongoose = require('mongoose')
 let mongoUrl = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_URL}`
 
 mongoose.connect(mongoUrl, { useMongoClient: true, promiseLibrary: global.Promise })
+// mongoose.connect(mongoUrl)
 
 var db = mongoose.connection;
 
