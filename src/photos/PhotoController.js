@@ -1,6 +1,6 @@
 const axios = require('axios')
     , getColors = require('get-image-colors')
-    , MemoryFileSystem = require("memory-fs")
+    , MemoryFileSystem = require('memory-fs')
     , fs = new MemoryFileSystem()
 
 const Photo = require('./PhotoModel')
@@ -15,7 +15,7 @@ class PhotoController {
     async findById (ctx) {
         const response = await Photo.findOne({ id: ctx.params.id })
 
-        ctx.body = response ? response : 'Not found any image with this id'
+        ctx.body = response
     }
 
     async add (ctx) {
@@ -28,20 +28,18 @@ class PhotoController {
     }
 
     async saveAll (ctx) {
-        console.log('Aehooooo')
         try {
-            let list = { request: {}}
             let colorArray
-            let save = []
-    
-    
-            fs.mkdirpSync("/public/images/")
-    
+            const save = []
+                , list = {}
+
+            fs.mkdirpSync('/public/images/')
+
             const unsplashResponse = await axios({
                 method: 'GET',
                 url: `${process.env.UNSPLASH_URL}/photos`,
                 headers: {
-                    'Authorization' : `Client-ID ${process.env.UNSPLASH_CLIENT_ID}`
+                    Authorization: `Client-ID ${process.env.UNSPLASH_CLIENT_ID}`
                 },
                 params: {
                     page: ctx.request.query ? ctx.request.query.page : null,
@@ -49,19 +47,18 @@ class PhotoController {
                 }
             })
     
-            for (let item of unsplashResponse.data) {
-        
+            for (const [index, item] of unsplashResponse.data.entries()) { //eslint-disable-line
                 await axios({
-                    method:'get',
+                    method: 'get',
                     url: item.urls.regular,
-                    responseType:'arraybuffer'
+                    responseType: 'arraybuffer'
                 })
-                .then((response) => {            
-                    fs.writeFileSync('/public/images/test.jpg', response.data)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+                    .then(response => {
+                        fs.writeFileSync('/public/images/test.jpg', response.data)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
             
                 await getColors(fs.readFileSync('/public/images/test.jpg'), 'image/jpg').then(c => {
                     colorArray = c.map(color => color.hex())
@@ -69,27 +66,25 @@ class PhotoController {
     
                 fs.unlink('/public/images/test.jpg', err => err)        
     
-                list.request.body = {
+                list.body = {
                     id: item.id,
-                    url: { 
+                    url: {
                         full: item.urls.full,
-                        regular: item.urls.regular 
+                        regular: item.urls.regular
                     },
                     colors: colorArray
                 }
-    
-                // console.log(list)
-                const photo = await new Photo(list.request.body).save()
-                save.push(photo) 
-                
+
+                // const photo = await new Photo(list.body).save()
+                // save.push(photo)
+
+                console.log(`Save => ${index} of ${ctx.request.query ? ctx.request.query.per_page : 10}`)
             }
-    
             fs.rmdirSync('/public/images/')
-    
             ctx.body = save // list of images
-        } catch(e) {
+        } catch (e) {
             console.log(e)
-        }    
+        }
     }
 }
 

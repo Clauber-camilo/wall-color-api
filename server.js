@@ -1,7 +1,8 @@
-let app = require('./app')
+const app = require('./app')
 
-let port = process.env.PORT || 3000 
+const port = process.env.PORT || 3000
 
-let server = app.listen(port, () => {
+app.listen(port, () => {
+    // eslint-disable-next-line
     console.log(`🚀  The magic will happen on port ${port}`)
 })
