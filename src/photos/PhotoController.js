@@ -30,8 +30,7 @@ class PhotoController {
     async saveAll (ctx) {
         try {
             let colorArray
-            const save = []
-                , list = {}
+            const list = {}
 
             fs.mkdirpSync('/public/images/')
 
@@ -54,41 +53,35 @@ class PhotoController {
             }))
 
             await Promise.all(requests)
-                .then(async response => {
-                    response.forEach(async (val, index) => {
-                        fs.writeFileSync('/public/images/test.jpg', val.data)
+                .then(response => response.map(async (val, index) => {
+                    await fs.writeFileSync('/public/images/test.jpg', val.data)
 
-                        await getColors(fs.readFileSync('/public/images/test.jpg'), 'image/jpg').then(c => {
-                            colorArray = c.map(color => color.hex())
-                        })
-
-                        fs.unlink('/public/images/test.jpg', err => err)
-
-                        list.body = {
-                            id: unsplashResponse.data[index].id,
-                            url: {
-                                full: unsplashResponse.data[index].urls.full,
-                                regular: unsplashResponse.data[index].urls.regular
-                            },
-                            colors: colorArray
-                        }
-                        const photo = await new Photo(list.body).save()
-                        save.push(photo)
-                        console.log(`Save => ${index + 1} of ${ctx.request.query ? ctx.request.query.per_page : 10}`)
-
+                    await getColors(fs.readFileSync('/public/images/test.jpg'), 'image/jpg').then(c => {
+                        colorArray = c.map(color => color.hex())
                     })
-                    const r = await save
-                    return r
-                })
-                .then(result => {
-                    console.log(result)
-                    fs.rmdirSync('/public/images/')
-                    ctx.body = result // list of images
-                    console.log('DONE')
-                })
 
+                    fs.unlink('/public/images/test.jpg', err => err)
+
+                    list.body = {
+                        id: unsplashResponse.data[index].id,
+                        url: {
+                            full: unsplashResponse.data[index].urls.full,
+                            regular: unsplashResponse.data[index].urls.regular
+                        },
+                        colors: colorArray
+                    }
+                    const photo = await new Photo(list.body).save()
+
+                    console.log(`Save => ${index + 1} of ${ctx.request.query ? ctx.request.query.per_page : 10}`) //eslint-disable-line
+
+                    return photo
+                }))
+                .then(() => {
+                    fs.rmdirSync('/public/images/')
+                    ctx.body = 'Itens Incluídos com sucesso'
+                })
         } catch (e) {
-            console.log(e)
+            ctx.body = e
         }
     }
 }

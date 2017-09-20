@@ -15,7 +15,7 @@ router.get('/', PhotoController.find)
 // GET /api/photos/id
 router.get('/:id', PhotoController.findById)
 
-// GET /api/photos/save-images 
+// GET /api/photos/save-images
 // This will save a list of images of the unplash in the mongo database
 // @param : page (default: 1)
 // @param : per_page (default : 10)

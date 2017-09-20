@@ -3,7 +3,7 @@ require('dotenv').config()
 const Koa = require('koa')
     , logger = require('koa-logger')
     , koaBody = require('koa-body')
-    , db = require('./src/lib/db')
+    , db = require('./src/lib/db') //eslint-disable-line
 
 const router = require('./src/photos/route')
 
@@ -11,9 +11,9 @@ const app = new Koa()
 
 app.use(logger())
 
-app 
+app
     .use(koaBody())
     .use(router.routes())
-    .use(router.allowedMethods());
+    .use(router.allowedMethods())
 
 module.exports = app

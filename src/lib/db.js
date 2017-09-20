@@ -1,16 +1,16 @@
-let mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
-let mongoUrl = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_URL}`
+const mongoUrl = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_URL}`
 
 mongoose.connect(mongoUrl, { useMongoClient: true, promiseLibrary: global.Promise })
 // mongoose.connect(mongoUrl)
 
-var db = mongoose.connection;
+const db = mongoose.connection
 
 // mongodb error
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, 'connection error:')) //eslint-disable-line
 
 // mongodb connection open
 db.once('open', () => {
-    console.log(`Connected to Mongo at: ${new Date()}`)
-});
+    console.log(`Connected to Mongo at: ${new Date()}`) //eslint-disable-line
+})

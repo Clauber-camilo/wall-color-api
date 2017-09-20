@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema
+const { Schema } = mongoose
 
 const photoSchema = new Schema({
     id: {
@@ -8,16 +8,16 @@ const photoSchema = new Schema({
         required: true
     },
     url: {
-        full: String, 
+        full: String,
         regular: {
             type: String,
             required: true
         }
     },
     colors: {
-        type: Array, 
+        type: Array,
         required: true
     }
 })
 
-module.exports =  mongoose.model('photo', photoSchema)
+module.exports = mongoose.model('photo', photoSchema)
