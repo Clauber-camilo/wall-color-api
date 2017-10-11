@@ -5,8 +5,6 @@ const axios = require('axios')
 
 const Photo = require('./PhotoModel')
 
-// const mock = require('../lib/mockup')
-
 class PhotoController {
     async find (ctx) {
         ctx.body = await Photo.find()
